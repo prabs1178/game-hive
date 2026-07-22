@@ -1,0 +1,427 @@
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive; /* Gaming font */
+}
+
+/* Cyberpunk Animated Background */
+body {
+    
+   
+        background: linear-gradient(to right, #1f1c2c, #928dab);
+        color: white;
+
+        
+    }
+    
+
+
+/* Floating Game Icons */
+@keyframes floatIcons {
+    0% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+    50% { transform: translateY(-20px) rotate(5deg); opacity: 1; }
+    100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+}
+
+.floating-icons {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    opacity: 0.6;
+    animation: floatIcons 4s infinite ease-in-out alternate;
+}
+
+.icon1 { top: 10%; left: 5%; animation-delay: 1s; }
+.icon2 { top: 30%; right: 10%; animation-delay: 2s; }
+.icon3 { bottom: 20%; left: 15%; animation-delay: 3s; }
+.icon4 { bottom: 5%; right: 20%; animation-delay: 4s; }
+
+/* Header Styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #111; /* Dark background */
+    color: white;
+}
+
+/* Logo & Title Styling */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 50px;  /* Adjust size */
+    height: auto;
+    margin-right: 10px; /* Space between logo and text */
+}
+#logoutBtn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.3s ease-in-out;
+}
+
+#logoutBtn:hover {
+    background-color: darkred;
+}
+
+
+h1 {
+    font-size: 28px;
+    color: #ffcc00;
+    text-shadow: 0px 0px 15px #ff9900;
+}
+/* Centering the welcome text */
+.welcome {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 20vh; /* Adjust height as needed */
+}
+
+/* Centering the footer */
+footer {
+    text-align: center;
+    padding: 10px;
+}
+
+/* Centering the Game Hive header */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* Logout Button */
+#logoutBtn {
+    background: red;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0px 0px 12px red;
+}
+
+#logoutBtn:hover {
+    background: darkred;
+    box-shadow: 0px 0px 20px darkred;
+}
+
+/* Welcome Section */
+.welcome {
+    margin-top: 30px;
+    font-size: 24px;
+}
+
+.welcome span {
+    color: #ffcc00;
+    text-shadow: 0px 0px 12px #ffcc00;
+}
+
+/* Games Grid */
+.games-container {
+    margin-top: 50px;
+}
+
+.games-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+/* Game Cards */
+.game-card {
+    position: relative;
+    width: 240px;
+    height: 280px;
+    background: rgba(20, 20, 20, 0.85);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.4s, box-shadow 0.4s;
+    border: 3px solid transparent;
+    box-shadow: 0px 0px 18px #ffcc00;
+}
+
+/* Pulsing Border Animation */
+@keyframes pulseBorder {
+    0% { box-shadow: 0px 0px 15px #ffcc00; }
+    50% { box-shadow: 0px 0px 25px #ff9900; }
+    100% { box-shadow: 0px 0px 15px #ffcc00; }
+}
+
+.game-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom: 3px solid #ffcc00;
+}
+
+/* Game Overlay */
+.game-card .overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    width: 100%;
+    padding: 20px;
+    font-size: 20px;
+    text-align: center;
+    transition: 0.4s;
+    font-weight: bold;
+}
+
+/* Hover Effects */
+.game-card:hover {
+    transform: scale(1.1);
+    animation: pulseBorder 1s infinite alternate;
+    border: 3px solid #ffcc00;
+}
+
+.game-card:hover .overlay {
+    background: rgba(255, 204, 0, 0.95);
+    color: black;
+}
+
+/* Footer */
+footer {
+    margin-top: 50px;
+    padding: 15px;
+    background: rgba(20, 20, 20, 0.9);
+    font-size: 16px;
+    border-top: 3px solid #ffcc00;
+    box-shadow: 0px 0px 15px #ffcc00;
+}
+/* Background Gradient */
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460, #53354a);
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s ease infinite;
+    z-index: -1;
+}
+
+/* Floating Particles */
+.particles, .emoji-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Glowing Particles */
+.particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+    animation: floatParticles linear infinite;
+}
+
+/* Floating Emojis */
+.emoji {
+    position: absolute;
+    font-size: 30px;
+    animation: floatEmojis linear infinite;
+}
+
+/* Background Animation */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Floating Particle Animation */
+@keyframes floatParticles {
+    from { transform: translateY(100vh) scale(0.5); opacity: 1; }
+    to { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+/* Floating Emoji Animation */
+@keyframes floatEmojis {
+    from { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+    to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+body.light-mode {
+    background-color: white;
+    color: black;
+}
+
+body.dark-mode {
+    background-color: black;
+    color: white;
+}
+body.dark-theme {
+    background-color: #111;
+    color: white;
+  }
+  
+  .dark-theme canvas {
+    border: 2px solid white;
+  }
+  body {
+    background: #0f0f1a;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .game-container {
+    text-align: center;
+    background: #1e1e2f;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  }
+  
+  canvas {
+    border: 2px solid #ffffff;
+    background-color: black;
+  }
+  
+  .info {
+    margin-top: 15px;
+    font-size: 1.2em;
+  }
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+.logout-button {
+    background: #ff4d4d;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.logout-button:hover {
+    background: #e63946;
+}
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px; /* adjust spacing between cards */
+    padding: 20px;
+    justify-items: center;
+  }
+  
+  .game-card {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .game-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .game-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .game-card .overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+  }
+  @media (max-width: 768px) {
+    .games-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .games-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.logo {
+    width: 150px; /* You can make it larger if needed */
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+}
+
+.logo-container h1 {
+    font-size: 2.5em;
+    color: #FFD700;
+    text-shadow: 2px 2px #FF4500;
+    margin: 0;
+}
+.logo {
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1) rotate(-2deg);
+}

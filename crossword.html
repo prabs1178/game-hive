@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossword Game - Game Hive</title>
+    <link rel="stylesheet" href="../css/styles.css"> <!-- Link to CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: #121212;
+            color: white;
+        }
+        .crossword-container {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            grid-gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .cell {
+            width: 50px;
+            height: 50px;
+            border: 2px solid white;
+            background: black;
+            text-align: center;
+            font-size: 20px;
+            color: white;
+        }
+        .input-cell {
+            background: white;
+            color: black;
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background: limegreen;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: darkgreen;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🧩 Crossword Game</h1>
+    <p>Fill in the correct words!</p>
+    
+    <div class="crossword-container" id="crosswordGrid">
+        <!-- Grid will be generated dynamically -->
+    </div>
+
+    <button class="btn" onclick="checkAnswers()">Check Answers</button>
+
+    <script src="../js/crossword.js"></script>
+
+</body>
+</html>

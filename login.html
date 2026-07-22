@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Game Hive</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div class="emoji-container"></div> <!-- Floating icons -->
+
+    <div class="container">
+        <div class="logo-container">
+            <img src="assets/gamehive3.jpg" alt="Game Hive Logo" class="logo">
+        </div>
+        <h2>Welcome to Gamehive</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="submit">Login</button>
+            <form id="loginForm"> ... </form>
+
+        </form>
+        <p class="login-text">Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </div>
+
+    <script type="module" src="js/login.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+<script src="static/js/auth.js"></script> <!-- Adjust path if needed -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+    } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+  
+    const firebaseConfig = {
+        apiKey: "AIzaSyC-VEfCLDLCxARSinl8wRBDlpNYyIyDqUg",
+  authDomain: "gamehive-86768.firebaseapp.com",
+  databaseURL: "https://gamehive-86768-default-rtdb.firebaseio.com",
+  projectId: "gamehive-86768",
+  storageBucket: "gamehive-86768.firebasestorage.app",
+  messagingSenderId: "791019749713",
+  appId: "1:791019749713:web:5bd3a751de27994249d370"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+  
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+  
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+  
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Redirect to dashboard on successful login
+          alert("Login successful!");
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          alert("Login failed: " + error.message);
+        });
+    });
+  </script>
+  
+</body>
+</html>

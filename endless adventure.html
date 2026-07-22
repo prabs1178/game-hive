@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Super Endless Adventure</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to top, #87CEEB, #ffffff);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #FFD700;
+      text-shadow: 2px 2px #FF4500;
+      font-size: 2.5em;
+      margin: 10px;
+    }
+    #score, #distance {
+      font-size: 1.3em;
+      color: #222;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 5px 15px;
+      border-radius: 10px;
+      margin: 5px;
+    }
+    canvas {
+      background: linear-gradient(to top, #3e3e3e 10%, #000);
+      box-shadow: 0 0 20px #FFD700;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Super Endless Adventure</h1>
+  <div id="score">Coins: 0</div>
+  <div id="distance">Distance: 0m</div>
+  <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreDisplay = document.getElementById('score');
+    const distanceDisplay = document.getElementById('distance');
+
+    let lastTime = 0;
+    const GRAVITY = 0.5;
+
+    let player = {
+      x: 50,
+      y: 300,
+      width: 30,
+      height: 30,
+      dy: 0,
+      speed: 5,
+      jumpPower: -12,
+      isJumping: false,
+      color: '#FF0000'
+    };
+
+    let score = 0, distance = 0, cameraX = 0;
+    let platforms = [], coins = [], enemies = [], particles = [];
+
+    function initializeGame() {
+      platforms = [{ x: 0, y: 350, width: 800, height: 50 }];
+      coins = [{ x: 250, y: 220, radius: 10, collected: false }];
+      enemies = [{ x: 300, y: 320, width: 30, height: 30, speed: 2, type: 'spiky', range: [200, 400] }];
+    }
+
+    function generateContent() {
+      distance = Math.floor(cameraX / 10);
+      distanceDisplay.textContent = `Distance: ${distance}m`;
+
+      if (platforms[platforms.length - 1].x < cameraX + 1000) {
+        let lastX = platforms[platforms.length - 1].x + platforms[platforms.length - 1].width;
+        let y = Math.random() * 100 + 250;
+        let width = Math.random() * 150 + 100;
+        platforms.push({ x: lastX + Math.random() * 150 + 50, y, width, height: 20 });
+
+        if (Math.random() > 0.5) {
+          coins.push({ x: lastX + width / 2, y: y - 30, radius: 10, collected: false });
+        }
+
+        if (Math.random() > 0.7) {
+          let enemyType = Math.random() > 0.5 ? 'spiky' : 'flying';
+          let enemyY = enemyType === 'spiky' ? y - 30 : y - 80;
+          enemies.push({
+            x: lastX + 100,
+            y: enemyY,
+            width: 30,
+            height: 30,
+            speed: 1.5,
+            type: enemyType,
+            range: [lastX + 50, lastX + 250]
+          });
+        }
+      }
+
+      platforms = platforms.filter(p => p.x + p.width > cameraX - 100);
+      coins = coins.filter(c => !c.collected && c.x > cameraX - 100);
+      enemies = enemies.filter(e => e.x + e.width > cameraX - 100);
+    }
+
+    function drawParticles() {
+      particles.forEach((p, index) => {
+        ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+        ctx.fillRect(p.x - cameraX, p.y, 4, 4);
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.02;
+        if (p.alpha <= 0) particles.splice(index, 1);
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#87CEEB';
+      ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
+
+      ctx.fillStyle = '#8B4513';
+      platforms.forEach(p => ctx.fillRect(p.x - cameraX, p.y, p.width, p.height));
+
+      ctx.fillStyle = '#FFD700';
+      coins.forEach(c => {
+        if (!c.collected) {
+          ctx.beginPath();
+          ctx.arc(c.x - cameraX, c.y, c.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      enemies.forEach(e => {
+        ctx.fillStyle = e.type === 'spiky' ? '#FF4500' : '#800080';
+        let y = e.type === 'flying' ? e.y + Math.sin(Date.now() / 200) * 5 : e.y;
+        ctx.fillRect(e.x - cameraX, y, e.width, e.height);
+      });
+
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x - cameraX, player.y, player.width, player.height);
+
+      drawParticles();
+    }
+
+    function updatePlayer(deltaTime) {
+      player.dy += GRAVITY;
+      player.y += player.dy;
+
+      platforms.forEach(p => {
+        if (player.y + player.height > p.y &&
+          player.y + player.height < p.y + p.height &&
+          player.x + player.width > p.x &&
+          player.x < p.x + p.width &&
+          player.dy > 0) {
+          player.y = p.y - player.height;
+          player.dy = 0;
+          player.isJumping = false;
+        }
+      });
+
+      if (player.y > canvas.height - player.height) {
+        player.y = canvas.height - player.height;
+        player.dy = 0;
+        player.isJumping = false;
+      }
+
+      coins.forEach(coin => {
+        if (!coin.collected &&
+          player.x < coin.x + coin.radius &&
+          player.x + player.width > coin.x - coin.radius &&
+          player.y < coin.y + coin.radius &&
+          player.y + player.height > coin.y - coin.radius) {
+          coin.collected = true;
+          score += 10;
+          scoreDisplay.textContent = `Coins: ${score}`;
+
+          for (let i = 0; i < 10; i++) {
+            particles.push({
+              x: coin.x,
+              y: coin.y,
+              vx: Math.random() * 4 - 2,
+              vy: Math.random() * -3,
+              alpha: 1
+            });
+          }
+        }
+      });
+
+      enemies.forEach(e => {
+        if (player.x < e.x + e.width &&
+          player.x + player.width > e.x &&
+          player.y < e.y + e.height &&
+          player.y + player.height > e.y) {
+          alert(`Game Over! Distance: ${distance}m, Coins: ${score}`);
+          resetGame();
+        }
+        e.x += e.speed;
+        if (e.x < e.range[0] || e.x > e.range[1]) e.speed *= -1;
+      });
+    }
+
+    function gameLoop(timestamp) {
+      let deltaTime = (timestamp - lastTime) / 1000;
+      lastTime = timestamp;
+
+      cameraX += 2;
+      player.x += 2;
+
+      generateContent();
+      updatePlayer(deltaTime);
+      draw();
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    let rightPressed = false, leftPressed = false;
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') rightPressed = true;
+      if (e.key === 'ArrowLeft') leftPressed = true;
+      if (e.key === 'ArrowUp' && !player.isJumping) {
+        player.dy = player.jumpPower;
+        player.isJumping = true;
+      }
+    });
+
+    document.addEventListener('keyup', e => {
+      if (e.key === 'ArrowRight') rightPressed = false;
+      if (e.key === 'ArrowLeft') leftPressed = false;
+    });
+
+    function movePlayer() {
+      if (rightPressed) player.x += player.speed;
+      if (leftPressed && player.x > cameraX + 50) player.x -= player.speed;
+    }
+
+    function resetGame() {
+      player.x = 50;
+      player.y = 300;
+      player.dy = 0;
+      cameraX = 0;
+      score = 0;
+      distance = 0;
+      scoreDisplay.textContent = `Coins: ${score}`;
+      distanceDisplay.textContent = `Distance: ${distance}m`;
+      initializeGame();
+    }
+
+    initializeGame();
+    setInterval(movePlayer, 20);
+    requestAnimationFrame(gameLoop);
+  </script>
+</body>
+</html>

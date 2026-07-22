@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2048 Game</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      color: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: bold;
+      margin: 0 0 20px 0;
+      color: #ffddc1;
+      text-shadow: 2px 2px 8px #000;
+    }
+
+    #score {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 80px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .grid-item {
+      width: 80px;
+      height: 80px;
+      background-color: #444;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #f1f1f1;
+      transition: background-color 0.3s ease;
+    }
+
+    .grid-item[data-value="2"] { background-color: #776e65; color: #eee4da; }
+    .grid-item[data-value="4"] { background-color: #776e65; color: #ede0c8; }
+    .grid-item[data-value="8"] { background-color: #bbada0; color: #f9f6f2; }
+    .grid-item[data-value="16"] { background-color: #8f7a66; color: #f9f6f2; }
+    .grid-item[data-value="32"] { background-color: #f67c5f; color: white; }
+    .grid-item[data-value="64"] { background-color: #f65e3b; color: white; }
+    .grid-item[data-value="128"] { background-color: #edcf72; color: white; }
+    .grid-item[data-value="256"] { background-color: #edcc61; color: white; }
+    .grid-item[data-value="512"] { background-color: #edc850; color: white; }
+    .grid-item[data-value="1024"] { background-color: #edc53f; color: white; }
+    .grid-item[data-value="2048"] { background-color: #edc22e; color: white; }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff6b6b;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff4757;
+    }
+  </style>
+</head>
+<body>
+  <h1>2048 Game</h1>
+  <div class="game-container">
+    <div id="score">Score: 0</div>
+    <div class="grid-container" id="grid">
+      <!-- Grid items will be dynamically generated -->
+    </div>
+    <button onclick="restartGame()">Restart Game</button>
+  </div>
+  <script>
+    const gridSize = 4;
+    let score = 0;
+
+    function createGrid() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      for (let i = 0; i < gridSize * gridSize; i++) {
+        const tile = document.createElement('div');
+        tile.classList.add('grid-item');
+        tile.setAttribute('data-value', '');
+        grid.appendChild(tile);
+      }
+    }
+
+    function getEmptyTiles() {
+      return Array.from(document.querySelectorAll('.grid-item')).filter(tile => !tile.textContent);
+    }
+
+    function addRandomTile() {
+      const emptyTiles = getEmptyTiles();
+      if (emptyTiles.length === 0) return;
+      const tile = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+      tile.textContent = '2';
+      tile.setAttribute('data-value', '2');
+    }
+
+    function updateScore(points) {
+      score += points;
+      document.getElementById('score').textContent = `Score: ${score}`;
+    }
+
+    function restartGame() {
+      score = 0;
+      updateScore(0);
+      createGrid();
+      addRandomTile();
+      addRandomTile();
+    }
+
+    function moveTiles(direction) {
+      const tiles = Array.from(document.querySelectorAll('.grid-item')).map(tile => parseInt(tile.textContent) || 0);
+      let moved = false;
+
+      function slide(row) {
+        const filtered = row.filter(num => num);
+        for (let i = 0; i < filtered.length - 1; i++) {
+          if (filtered[i] === filtered[i + 1]) {
+            filtered[i] *= 2;
+            updateScore(filtered[i]);
+            filtered[i + 1] = 0;
+          }
+        }
+        return filtered.filter(num => num).concat(Array(gridSize - filtered.filter(num => num).length).fill(0));
+      }
+
+      let newTiles;
+      if (direction === 'left' || direction === 'right') {
+        newTiles = [];
+        for (let r = 0; r < gridSize; r++) {
+          const row = tiles.slice(r * gridSize, r * gridSize + gridSize);
+          const newRow = direction === 'left' ? slide(row) : slide(row.reverse()).reverse();
+          newTiles.push(...newRow);
+        }
+      } else {
+        newTiles = new Array(gridSize * gridSize).fill(0);
+        for (let c = 0; c < gridSize; c++) {
+          const col = [];
+          for (let r = 0; r < gridSize; r++) col.push(tiles[r * gridSize + c]);
+          const newCol = direction === 'up' ? slide(col) : slide(col.reverse()).reverse();
+          for (let r = 0; r < gridSize; r++) newTiles[r * gridSize + c] = newCol[r];
+        }
+      }
+
+      const gridItems = document.querySelectorAll('.grid-item');
+      gridItems.forEach((tile, i) => {
+        if (parseInt(tile.textContent) !== newTiles[i]) moved = true;
+        tile.textContent = newTiles[i] || '';
+        tile.setAttribute('data-value', newTiles[i] || '');
+      });
+
+      if (moved) addRandomTile();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowUp': moveTiles('up'); break;
+        case 'ArrowDown': moveTiles('down'); break;
+        case 'ArrowLeft': moveTiles('left'); break;
+        case 'ArrowRight': moveTiles('right'); break;
+      }
+    });
+
+    window.onload = () => {
+      restartGame();
+    };
+  </script>
+</body>
+</html>

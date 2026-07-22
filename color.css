@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #111;
+    color: #fff;
+    text-align: center;
+}
+
+#game {
+    width: 400px;
+    height: 600px;
+    background: #222;
+    margin: 20px auto;
+    border: 5px solid #fff;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+#ball {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+}
+
+#paddle {
+    width: 100px;
+    height: 20px;
+    border-radius: 10px;
+    background: green;
+    position: absolute;
+    bottom: 20px;
+    left: 150px;
+    transition: background 0.2s;
+}

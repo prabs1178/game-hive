@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Color Catcher</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #111;
+            color: #fff;
+            text-align: center;
+        }
+
+        #game {
+            width: 400px;
+            height: 600px;
+            background: #222;
+            margin: 20px auto;
+            border: 5px solid #fff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        #ball {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+        }
+
+        #paddle {
+            width: 100px;
+            height: 20px;
+            border-radius: 10px;
+            background: green;
+            position: absolute;
+            bottom: 20px;
+            left: 150px;
+            transition: background 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Color Catcher</h1>
+    <div id="game">
+        <div id="ball"></div>
+        <div id="paddle"></div>
+    </div>
+    <h2 id="score">Score: 0</h2>
+    <p>Controls:
+        <strong>← →</strong> to move,
+        <strong>1</strong> Green,
+        <strong>2</strong> Red,
+        <strong>3</strong> Blue,
+        <strong>4</strong> Yellow
+    </p>
+
+    <script>
+        const game = document.getElementById("game");
+        const ball = document.getElementById("ball");
+        const paddle = document.getElementById("paddle");
+        const scoreDisplay = document.getElementById("score");
+
+        const colors = ["green", "red", "blue", "yellow"];
+        let paddleColor = "green";
+        let score = 0;
+        let speed = 2;
+        let ballY = 0;
+        let ballX = 180;
+        let paddleX = 150;
+        let ballColor = colors[Math.floor(Math.random() * 4)];
+        let gameRunning = true;
+
+        function resetBall() {
+            ballY = 0;
+            ballX = Math.floor(Math.random() * 360);
+            ball.style.left = `${ballX}px`;
+            ballColor = colors[Math.floor(Math.random() * 4)];
+            ball.style.backgroundColor = ballColor;
+        }
+
+        function updatePaddlePosition() {
+            paddle.style.left = `${paddleX}px`;
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+
+        function dropBall() {
+            if (!gameRunning) return;
+            ballY += speed;
+            ball.style.top = `${ballY}px`;
+
+            if (ballY >= 540) {
+                let ballCenter = ballX + 20;
+                let paddleLeft = paddleX;
+                let paddleRight = paddleX + 100;
+
+                if (ballCenter >= paddleLeft && ballCenter <= paddleRight && paddleColor === ballColor) {
+                    score++;
+                    speed += 0.2;
+                    updateScore();
+                    resetBall();
+                } else {
+                    alert(`Game Over!\nScore: ${score}`);
+                    gameRunning = false;
+                    location.reload();
+                }
+            }
+
+            if (gameRunning) requestAnimationFrame(dropBall);
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft" && paddleX > 0) paddleX -= 20;
+            if (e.key === "ArrowRight" && paddleX < 300) paddleX += 20;
+
+            if (e.key === "1") paddleColor = "green";
+            if (e.key === "2") paddleColor = "red";
+            if (e.key === "3") paddleColor = "blue";
+            if (e.key === "4") paddleColor = "yellow";
+
+            paddle.style.backgroundColor = paddleColor;
+            updatePaddlePosition();
+        });
+
+        resetBall();
+        updatePaddlePosition();
+        updateScore();
+        dropBall();
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Game Hive</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Floating Icons -->
+    <div class="floating-icons">
+        <img src="assets/Video-Game-Controller-Logo-Graphics-69127373-1.png" class="icon">
+        <img src="assets/star_PNG41531.png" class="icon">
+        <img src="assets/pixel-heart-pixelart-png.png" class="icon">
+        <img src="assets/joystick-3.png" class="icon">
+        <img src="assets/dice_PNG130.png" class="icon">
+        <img src="icons/pixel-heart.png" class="icon">
+    </div>
+
+    <!-- Signup Form -->
+    <div class="container">
+        <div class="signup-box">
+            <h2>Create an Account</h2>
+            <form id="signupForm">
+                <div class="input-box">
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="signup-btn">Sign Up</button>
+            </form>
+            <p class="login-link">Already have an account? <a href="login.html">Login</a></p>
+            <p id="error-message"></p>
+        </div>
+    </div>
+
+    <script type="module" src="signup.js"></script>
+</body>
+</html>

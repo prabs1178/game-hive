@@ -1,0 +1,30 @@
+body {
+    background: #0f0f1a;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .game-container {
+    text-align: center;
+    background: #1e1e2f;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  }
+  
+  canvas {
+    border: 2px solid #ffffff;
+    background-color: black;
+  }
+  
+  .info {
+    margin-top: 15px;
+    font-size: 1.2em;
+  }
+  
